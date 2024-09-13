@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:wyreflow/modules/registration_model.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -11,14 +13,12 @@ class SignupScreenState extends State<SignupScreen> {
 
   final _paymentStatusController = TextEditingController();
   final _timeEndController = TextEditingController();
-  final _uniqueController = TextEditingController();
   final _fullNameController = TextEditingController();
   final _fatherNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _dateOfBirthController = TextEditingController();
   final _genderController = TextEditingController();
   final _phoneNumberController = TextEditingController();
-  final _whatsappNumberController = TextEditingController();
   final _collegeStateController = TextEditingController();
   final _birthPlaceController = TextEditingController();
   final _collegeNameController = TextEditingController();
@@ -28,6 +28,34 @@ class SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
   final _verifiedController = TextEditingController();
   final _otpController = TextEditingController();
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        _dateOfBirthController.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+  }
+
+  Future<void> _selectTime(BuildContext context) async {
+    TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        _timeEndController.text = picked.format(context);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,28 +85,15 @@ class SignupScreenState extends State<SignupScreen> {
                   });
                 },
               ),
-
               TextFormField(
                 controller: _timeEndController,
-                decoration: const InputDecoration(labelText: 'Time End'),
-                keyboardType: TextInputType.datetime,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9:]'))
-                ],
-              ),
-
-              TextFormField(
-                controller: _uniqueController,
-                decoration: const InputDecoration(labelText: 'Unique'),
-                maxLength: 8,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter unique value';
-                  }
-                  return null;
+                decoration: const InputDecoration(
+                    labelText: 'Time End', suffixIcon: Icon(Icons.access_time)),
+                readOnly: true,
+                onTap: () {
+                  _selectTime(context);
                 },
               ),
-
               TextFormField(
                 controller: _fullNameController,
                 decoration: const InputDecoration(labelText: 'Full Name'),
@@ -90,7 +105,6 @@ class SignupScreenState extends State<SignupScreen> {
                   return null;
                 },
               ),
-
               TextFormField(
                 controller: _fatherNameController,
                 decoration: const InputDecoration(labelText: 'Father Name'),
@@ -102,7 +116,6 @@ class SignupScreenState extends State<SignupScreen> {
                   return null;
                 },
               ),
-
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
@@ -117,17 +130,22 @@ class SignupScreenState extends State<SignupScreen> {
                   return null;
                 },
               ),
-
               TextFormField(
                 controller: _dateOfBirthController,
-                decoration: const InputDecoration(labelText: 'Date of Birth'),
-                keyboardType: TextInputType.datetime,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9/-]'))
-                ],
+                decoration: const InputDecoration(
+                    labelText: 'Date of Birth',
+                    suffixIcon: Icon(Icons.calendar_today)),
+                readOnly: true,
+                onTap: () {
+                  _selectDate(context);
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your date of birth';
+                  }
+                  return null;
+                },
               ),
-
-              // Gender
               DropdownButtonFormField<String>(
                 value: _genderController.text.isEmpty
                     ? null
@@ -144,7 +162,6 @@ class SignupScreenState extends State<SignupScreen> {
                   });
                 },
               ),
-
               TextFormField(
                 controller: _phoneNumberController,
                 decoration: const InputDecoration(labelText: 'Phone Number'),
@@ -157,20 +174,6 @@ class SignupScreenState extends State<SignupScreen> {
                   return null;
                 },
               ),
-
-              TextFormField(
-                controller: _whatsappNumberController,
-                decoration: const InputDecoration(labelText: 'Whatsapp Number'),
-                maxLength: 15,
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter whatsapp number';
-                  }
-                  return null;
-                },
-              ),
-
               TextFormField(
                 controller: _collegeStateController,
                 decoration: const InputDecoration(labelText: 'College State'),
@@ -182,13 +185,11 @@ class SignupScreenState extends State<SignupScreen> {
                   return null;
                 },
               ),
-
               TextFormField(
                 controller: _birthPlaceController,
                 decoration: const InputDecoration(labelText: 'Birth Place'),
                 maxLength: 100,
               ),
-
               TextFormField(
                 controller: _collegeNameController,
                 decoration: const InputDecoration(labelText: 'College Name'),
@@ -200,7 +201,6 @@ class SignupScreenState extends State<SignupScreen> {
                   return null;
                 },
               ),
-
               TextFormField(
                 controller: _branchNameController,
                 decoration: const InputDecoration(labelText: 'Branch Name'),
@@ -212,13 +212,11 @@ class SignupScreenState extends State<SignupScreen> {
                   return null;
                 },
               ),
-
               TextFormField(
                 controller: _degreeNameController,
                 decoration: const InputDecoration(labelText: 'Degree Name'),
                 maxLength: 200,
               ),
-
               TextFormField(
                 controller: _passingYearController,
                 decoration: const InputDecoration(labelText: 'Passing Year'),
@@ -232,7 +230,6 @@ class SignupScreenState extends State<SignupScreen> {
                   return null;
                 },
               ),
-
               TextFormField(
                 controller: _passwordController,
                 decoration: const InputDecoration(labelText: 'Password'),
@@ -245,7 +242,6 @@ class SignupScreenState extends State<SignupScreen> {
                   return null;
                 },
               ),
-
               SwitchListTile(
                 title: const Text('Verified'),
                 value: _verifiedController.text == 'true',
@@ -255,20 +251,40 @@ class SignupScreenState extends State<SignupScreen> {
                   });
                 },
               ),
-
               TextFormField(
                 controller: _otpController,
                 decoration: const InputDecoration(labelText: 'OTP'),
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
-
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    print('Form is valid and ready to be submitted');
+                    UserModel(
+                      paymentStatus: _paymentStatusController.text,
+                      timeEnd: _timeEndController.text,
+                      fullName: _fullNameController.text,
+                      fatherName: _fatherNameController.text,
+                      email: _emailController.text,
+                      // dateOfBirth: _dateOfBirthController.text,
+                      gender: _genderController.text,
+                      phoneNumber: _phoneNumberController.text,
+                      collegeState: _collegeStateController.text,
+                      birthPlace: _birthPlaceController.text,
+                      collegeName: _collegeNameController.text,
+                      branchName: _branchNameController.text,
+                      degreeName: _degreeNameController.text,
+                      // passingYear: _passingYearController.text,
+                      password: _passwordController.text,
+                      verified: _verifiedController.text == 'true',
+                      otp: _otpController.text,
+                    );
                   }
+
+                  //   if (_formKey.currentState!.validate()) {
+                  //     print('Form is valid and ready to be submitted');
+                  //   }
                 },
                 child: const Text('Submit'),
               ),

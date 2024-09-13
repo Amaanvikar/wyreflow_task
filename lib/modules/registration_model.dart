@@ -1,14 +1,12 @@
 class UserModel {
   final String? paymentStatus;
   final String? timeEnd;
-  final String unique;
   final String fullName;
   final String fatherName;
   final String email;
   final DateTime? dateOfBirth;
   final String? gender;
   final String phoneNumber;
-  final String whatsappNumber;
   final String collegeState;
   final String birthPlace;
   final String collegeName;
@@ -22,14 +20,12 @@ class UserModel {
   UserModel({
     this.paymentStatus,
     this.timeEnd,
-    required this.unique,
     required this.fullName,
     required this.fatherName,
     required this.email,
     this.dateOfBirth,
     this.gender,
     required this.phoneNumber,
-    required this.whatsappNumber,
     required this.collegeState,
     required this.birthPlace,
     required this.collegeName,
@@ -45,7 +41,6 @@ class UserModel {
     return UserModel(
       paymentStatus: json['paymentStatus'],
       timeEnd: json['timeEnd'],
-      unique: json['unique'],
       fullName: json['fullName'],
       fatherName: json['fatherName'],
       email: json['email'],
@@ -54,7 +49,6 @@ class UserModel {
           : null,
       gender: json['gender'],
       phoneNumber: json['phoneNumber'],
-      whatsappNumber: json['whatsappNumber'],
       collegeState: json['collegeState'],
       birthPlace: json['birthPlace'],
       collegeName: json['collegeName'],
@@ -71,14 +65,12 @@ class UserModel {
     return {
       'paymentStatus': paymentStatus,
       'timeEnd': timeEnd,
-      'unique': unique,
       'fullName': fullName,
       'fatherName': fatherName,
       'email': email,
       'dateOfBirth': dateOfBirth?.toIso8601String(),
       'gender': gender,
       'phoneNumber': phoneNumber,
-      'whatsappNumber': whatsappNumber,
       'collegeState': collegeState,
       'birthPlace': birthPlace,
       'collegeName': collegeName,
